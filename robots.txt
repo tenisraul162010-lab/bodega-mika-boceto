@@ -1,0 +1,3 @@
+# Demostración: no indexar. Al publicar, pon demo en false y añade el dominio en _src/datos.mjs.
+User-agent: *
+Disallow: /
