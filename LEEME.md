@@ -30,3 +30,10 @@ node _src/build.mjs
 - **Publicar:** pon `demo: false` y el `dominio`. Se generan `sitemap.xml` y un `robots.txt` abierto.
 
 Colores y tipografía: variables al principio de `css/estilos.css`.
+
+## Animaciones
+
+- `js/animaciones.js`: animaciones de scroll con GSAP y ScrollTrigger.
+- `js/main.js`: menú, galería, horario, mapa y formulario.
+
+Si el visitante pide reducir el movimiento, la web muestra las mismas fotos y textos sin animaciones.

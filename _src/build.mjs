@@ -8,11 +8,12 @@ const raiz = join(dirname(fileURLToPath(import.meta.url)), "..");
 const direccion = `${n.calle}, ${n.cp} ${n.ciudad}, ${n.provincia}`;
 const abs = (r) => (sitio.dominio ? `${sitio.dominio}/${r}` : r);
 const anio = 2026;
+const ver = Date.now().toString(36); // para que el navegador no use archivos antiguos tras un cambio
 
-const plato = (img, alt, sizes, extra = "") =>
-  `<img class="plato" src="img/${img}.webp" srcset="img/${img}-480.webp 480w, img/${img}.webp 900w" sizes="${sizes}" width="900" height="900" loading="lazy" decoding="async" alt="${alt}"${extra}>`;
+const escena = (foto, alt, primera = false) => `<picture class="escena-foto"><source media="(max-width: 700px)" srcset="img/${foto}-m.webp"><img src="img/${foto}.webp" alt="${alt}" ${primera ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"></picture>`;
+const foto = (nombre, alt, sizes, ancho = 1200, alto = 800) => `<img src="img/${nombre}.webp" srcset="img/${nombre}-640.webp 640w, img/${nombre}.webp 1200w" sizes="${sizes}" width="${ancho}" height="${alto}" loading="lazy" decoding="async" alt="${alt}">`;
 
-const redondo = (img) => `<img class="plato en-linea" src="img/${img}-480.webp" width="480" height="480" loading="lazy" decoding="async" alt="">`;
+const redondo = (nombre) => `<img class="en-linea" src="img/${nombre}-640.webp" width="240" height="240" loading="lazy" decoding="async" alt="">`;
 
 const wa = n.whatsapp ? `<a class="btn btn-claro" href="https://wa.me/${n.whatsapp}">Escribir por WhatsApp</a>` : "";
 
@@ -49,8 +50,8 @@ ${sitio.demo ? '<meta name="robots" content="noindex">\n' : ""}${sitio.dominio ?
 <meta name="theme-color" content="#2a1b12">
 <link rel="icon" href="img/icono.svg" type="image/svg+xml">
 <link rel="preload" href="fonts/young-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-${inicio ? '<link rel="preload" as="image" href="img/hero-plato.webp" imagesrcset="img/hero-plato-820.webp 820w, img/hero-plato.webp 1140w" imagesizes="(max-width: 700px) 135vw, 135vh">' : ""}
-<link rel="stylesheet" href="css/estilos.css">
+${inicio ? '<link rel="preload" as="image" href="img/esc-llamas.webp" media="(max-width: 700px)"><link rel="preload" as="image" href="img/esc-brasas.webp" media="(min-width: 701px)">' : ""}
+<link rel="stylesheet" href="css/estilos.css?v=${ver}">
 ${inicio ? `<script type="application/ld+json">${JSON.stringify(schema)}</script>\n` : ""}<script>document.documentElement.classList.add("js")</script>
 </head>`;
 
@@ -108,7 +109,7 @@ const pie = (inicio) => `<footer class="pie">
     <a href="aviso-legal.html">Aviso legal</a>
     <a href="privacidad.html">Política de privacidad</a>
     <a href="cookies.html">Cookies</a>
-    ${sitio.demo ? "<span>Web de demostración, no publicada</span>" : ""}
+    ${sitio.demo ? "<span>Web de demostración. Fotos de platos de muestra, no son de la casa.</span>" : ""}
   </div>
 </footer>`;
 
@@ -129,9 +130,9 @@ const inicio = `${cabeza({
 ${barra(true)}
 <main id="contenido">
 <section class="hero" id="inicio">
-  <div class="hero-plato"><div class="disco" data-disco><i></i><i></i><i></i><i></i><i></i><img class="plato" src="img/hero-plato.webp" srcset="img/hero-plato-820.webp 820w, img/hero-plato.webp 1140w" sizes="(max-width: 700px) 135vw, 135vh" width="1140" height="1140" fetchpriority="high" alt="Chuletón a la brasa cortado, servido en un plato azul"></div></div>
+  <picture class="hero-foto" data-hero-foto><source media="(max-width: 700px)" srcset="img/esc-llamas.webp"><img src="img/esc-brasas.webp" alt="Carne sobre unas brasas encendidas" fetchpriority="high" decoding="async"></picture>
   <div class="hero-txt">
-    <h1>Sentir, saborear y brindar.</h1>
+    <h1 data-letras>Sentir, saborear y brindar.</h1>
     <p class="hero-sub">Mesón y carne a la brasa en Arganda del Rey. Cocina casera, raciones para compartir, menú del día y una terraza para quedarse.</p>
     <div class="acciones">
       <a class="btn btn-bronce btn-gr" href="#reservas">Reservar mesa</a>
@@ -141,11 +142,24 @@ ${barra(true)}
   </div>
 </section>
 
-<section class="casa" id="casa">
-  <p class="declaracion rv">Brasas, cuchara ${redondo("plato-cazuela")} y raciones en el centro de la mesa ${redondo("plato-bravas")}, desde que abre la mañana hasta la última ronda.</p>
+<section class="espec" id="especialidades">
+  <h2 data-letras>Lo que sale de nuestra cocina</h2>
+  <div class="espec-rejilla">
+    ${especialidades.map((e, i) => `<article class="espec-item">
+      ${escena(e.foto, e.alt)}
+      <div class="espec-txt">
+        <h3>${e.titulo}</h3>
+        <p>${e.texto}</p>
+      </div>
+    </article>`).join("\n    ")}
+  </div>
+</section>
+
+<section class="casa" id="casa" data-cortina>
+  <p class="declaracion">Brasas, cuchara ${redondo("gal-sarten")} y raciones en el centro de la mesa ${redondo("gal-patatas")}, desde que abre la mañana hasta la última ronda.</p>
   <div class="casa-rejilla">
     <div class="casa-txt">
-      <h2 class="rv">Una bodega para quedarse</h2>
+      <h2 data-letras>Una bodega para quedarse</h2>
       <div class="rv">
         <p>La Bodega de Mika es un mesón del Polígono San Sebastián, en Arganda del Rey. Aquí se viene a desayunar antes de empezar el día, a comer de menú a mediodía y a cenar de raciones o de brasa con quien te apetezca.</p>
         <p>La cocina es casera y las cantidades, de las que se comparten. En la sala, Mika y su equipo están pendientes de cada mesa, tanto si vienes por primera vez como si ya te conocen.</p>
@@ -157,31 +171,19 @@ ${barra(true)}
         <li>Aparcamiento para clientes</li>
       </ul>
     </div>
-    <div class="casa-platos">
-      ${plato("plato-solomillo", "Dos piezas de carne a la brasa con patatas y verduras", "(max-width: 700px) 86vw, 52vw", ' data-giro')}
-      ${plato("plato-boquerones", "Boquerones fritos con tomate", "(max-width: 700px) 42vw, 22vw", ' data-giro')}
+    <div class="casa-fotos">
+      <div class="casa-f1" data-prof="-10">${foto("gal-romero", "Carne con romero y verduras en un plato oscuro", "(max-width: 700px) 86vw, 44vw")}</div>
+      <div class="casa-f2" data-prof="14">${foto("gal-plancha", "Carne a la plancha servida en la mesa", "(max-width: 700px) 50vw, 24vw")}</div>
     </div>
   </div>
 </section>
 
-<section class="espec" id="especialidades">
-  <h2 class="rv">Lo que sale de nuestra cocina</h2>
-  <div class="espec-rejilla">
-    ${especialidades.map((e) => `<article class="espec-item rv">
-      ${plato(e.img, e.alt, "(max-width: 700px) 70vw, 30vw", " data-giro")}
-      <h3>${e.titulo}</h3>
-      <p>${e.texto}</p>
-      ${e.ref ? '<p class="nota">Imagen de referencia, no es un plato de la casa.</p>' : ""}
-    </article>`).join("\n    ")}
-  </div>
-</section>
-
-<section class="carta" id="carta">
+<section class="carta" id="carta" data-cortina>
   <div class="carta-cab">
-    <h2 class="rv">La carta de la Bodega</h2>
+    <h2 data-letras>La carta de la Bodega</h2>
     <p class="carta-aviso rv pend"><strong>Carta provisional.</strong> No es la carta oficial: es una estructura de muestra, sin precios ni disponibilidad confirmados. Para saber qué hay hoy, llámanos.</p>
   </div>
-  <div class="mantel rv">
+  <div class="mantel">
     <div class="menus">
       ${menus.map((m) => `<div class="menu-dia"><h3>${m.nombre}</h3><p>${m.detalle}</p>${precio(m.precio)}</div>`).join("\n      ")}
     </div>
@@ -202,19 +204,14 @@ ${barra(true)}
   </div>
 </section>
 
-<section class="galeria" id="galeria">
-  <h2 class="rv">Así llega a la mesa</h2>
-  <div class="aro" aria-hidden="true" data-aro>
-    <div class="aro-giro" data-aro-giro>
-      ${["plato-chuleton", "plato-bravas", "plato-pulpo", "plato-tabla", "plato-boquerones", "plato-solomillo", "plato-calamares", "plato-tarta"].map((img, i) => `<img src="img/${img}-480.webp" width="480" height="480" loading="lazy" decoding="async" alt="" draggable="false" style="--i:${i}">`).join("")}
-    </div>
-  </div>
+<section class="galeria" id="galeria" data-cortina>
+  <h2 data-letras>Para ir abriendo boca</h2>
   <ul class="galeria-rejilla">
-    ${galeria.map((g, i) => `<li class="g-${g.tam} rv">
-      <button type="button" class="g-boton fondo-${g.fondo || "foto"}" data-foto="${i}" aria-label="Ampliar: ${g.pie}">
-        ${g.tipo === "foto"
-          ? `<img class="g-foto" src="img/${g.img}.webp" width="${g.ancho}" height="${g.alto}" loading="lazy" decoding="async" alt="${g.alt}">`
-          : plato(g.img, g.alt, g.tam === "a" ? "(max-width: 700px) 80vw, 40vw" : "(max-width: 700px) 42vw, 22vw")}
+    ${galeria.map((g, i) => `<li class="g-${g.tam}">
+      <button type="button" class="g-boton" data-foto="${i}" aria-label="Ampliar: ${g.pie}">
+        ${g.real
+          ? `<img src="img/${g.foto}.webp" width="${g.ancho}" height="${g.alto}" loading="lazy" decoding="async" alt="${g.alt}">`
+          : foto(g.foto, g.alt, g.tam === "a" ? "(max-width: 700px) 92vw, 48vw" : "(max-width: 700px) 46vw, 24vw")}
       </button>
     </li>`).join("\n    ")}
   </ul>
@@ -227,9 +224,9 @@ ${barra(true)}
 </dialog>
 
 <section class="terraza" id="terraza">
-  <div class="terraza-foto"><img src="img/fachada.webp" srcset="img/fachada-900.webp 900w, img/fachada.webp 1672w" sizes="100vw" width="1672" height="941" loading="lazy" decoding="async" alt="Fachada de La Bodega de Mika con sus carteles, la verja de forja, faroles y jardineras con flores" data-deriva></div>
+  <div class="terraza-foto"><img src="img/fachada.webp" srcset="img/fachada-900.webp 1200w, img/fachada.webp 2600w" sizes="100vw" width="2600" height="1463" loading="lazy" decoding="async" alt="Fachada de La Bodega de Mika con sus carteles, la verja de forja, faroles y jardineras con flores"></div>
   <div class="terraza-txt">
-    <h2 class="rv">La sobremesa, mejor fuera</h2>
+    <h2 data-letras>La sobremesa, mejor fuera</h2>
     <div class="rv">
       <p>Detrás de la verja hay una terraza amplia y protegida del tráfico, con plantas, luces y mesas para alargar la comida o la cena. En los días de calor, los nebulizadores ayudan; y si prefieres estar dentro, el salón tiene aire acondicionado.</p>
       <p>También organizamos comidas para grupos, de empresa y celebraciones. Cuéntanos cuántos sois y buscamos la mejor forma de sentaros.</p>
@@ -241,10 +238,11 @@ ${barra(true)}
   </div>
 </section>
 
-<section class="opiniones" id="opiniones">
-  <h2 class="rv">Lo que dicen de nosotros</h2>
+<section class="opiniones" id="opiniones" data-cortina>
+  <h2 data-letras>Lo que dicen de nosotros</h2>
   <div class="opiniones-rejilla">
     <a class="nota-google rv" href="${n.google}" target="_blank" rel="noopener">
+      <svg class="anillo" viewBox="0 0 100 100" aria-hidden="true"><circle class="anillo-pista" cx="50" cy="50" r="47.5" pathLength="100"/><circle class="anillo-valor" cx="50" cy="50" r="47.5" pathLength="100"/></svg>
       <strong>${valoracion.nota}</strong>
       <span>de 5 en Google, con ${valoracion.opiniones} opiniones (${valoracion.fecha})</span>
       <span class="ir">Leer las opiniones</span>
@@ -258,9 +256,25 @@ ${barra(true)}
   </div>
 </section>
 
-<section class="reservas" id="reservas">
+<section class="brindis" id="brindis">
+  ${escena("esc-brindis", "Varias personas brindando con copas de vino tinto")}
+  <h2 class="brindis-t">
+    <span class="brindis-l">Para sentir,</span>
+    <span class="brindis-l">saborear</span>
+    <span class="brindis-l">y brindar.</span>
+  </h2>
+  <div class="brindis-fin">
+    <p>Te guardamos sitio en la mesa. Dinos cuándo venís y cuántos sois.</p>
+    <div class="acciones">
+      <a class="btn btn-bronce btn-gr" href="#reservas">Reservar mesa</a>
+      <a class="btn btn-claro btn-gr" href="tel:${n.telefonoLink}">Llamar al ${n.telefono}</a>
+    </div>
+  </div>
+</section>
+
+<section class="reservas" id="reservas" data-cortina>
   <div class="reservas-cab">
-    <h2 class="rv">Reserva tu mesa</h2>
+    <h2 data-letras>Reserva tu mesa</h2>
     <p class="rv">Lo más rápido es llamar. Si lo prefieres, déjanos tu solicitud y te contestamos.</p>
     <div class="acciones rv">
       <a class="btn btn-osc btn-gr" href="tel:${n.telefonoLink}">Llamar al ${n.telefono}</a>
@@ -307,7 +321,7 @@ ${barra(true)}
         <address>${n.calle}<br>${n.cp} ${n.ciudad}, ${n.provincia}</address>
         <p><a class="enlace" href="tel:${n.telefonoLink}">${n.telefono}</a> · <a class="enlace" href="tel:${n.movilLink}">${n.movil}</a></p>
         <div class="mapa" data-mapa data-src="${n.mapaEmbed}">
-          <img src="img/fachada-900.webp" width="900" height="506" loading="lazy" decoding="async" alt="">
+          <img src="img/fachada-900.webp" width="1200" height="675" loading="lazy" decoding="async" alt="">
           <div class="mapa-acc">
             <a class="btn btn-bronce" href="${n.comoLlegar}" target="_blank" rel="noopener">Abrir la ruta</a>
             <button class="btn btn-claro" type="button" data-mapa-btn>Ver el mapa aquí</button>
@@ -324,8 +338,12 @@ ${pie(true)}
   <a class="btn btn-claro" href="tel:${n.telefonoLink}">Llamar</a>
   <a class="btn btn-bronce" href="#reservas">Reservar</a>
 </div>
-<script src="js/config.js"></script>
-<script src="js/main.js" defer></script>
+<script src="js/config.js?v=${ver}"></script>
+<script src="js/main.js?v=${ver}" defer></script>
+<script src="js/vendor/gsap.min.js" defer></script>
+<script src="js/vendor/ScrollTrigger.min.js" defer></script>
+<script src="js/vendor/lenis.min.js" defer></script>
+<script src="js/animaciones.js?v=${ver}" defer></script>
 </body>
 </html>
 `;
@@ -338,8 +356,8 @@ ${barra(false)}
   ${cuerpo}
 </main>
 ${pie(false)}
-<script src="js/config.js"></script>
-<script src="js/main.js" defer></script>
+<script src="js/config.js?v=${ver}"></script>
+<script src="js/main.js?v=${ver}" defer></script>
 </body>
 </html>
 `;
@@ -353,7 +371,7 @@ const paginas = {
   <h2>Quién es el titular</h2>${titular}
   <h2>Uso de la web</h2><p>Esta web informa sobre el restaurante y permite pedir mesa. Los precios, platos y horarios pueden cambiar; ante cualquier duda, confírmalos por teléfono. Una solicitud enviada desde la web no es una reserva hasta que el restaurante la confirme.</p>
   <h2>Propiedad intelectual</h2><p>Los textos, el diseño y las imágenes pertenecen a su titular o se usan con permiso, y no pueden copiarse sin autorización.</p>
-  <h2>Créditos de las imágenes</h2><p>«Tortilla de Patatas (Corte transversal)», de Tamorlan, Wikimedia Commons, licencia CC BY-SA 3.0, recortada: es una imagen de referencia, no un plato de la casa. <span class="pend">Las fotografías de platos de esta demostración proceden de fichas públicas de Google y deben sustituirse o contar con permiso de sus autores antes de publicar la web.</span></p>` }),
+  <h2>Créditos de las imágenes</h2><p><span class="pend">Las fotografías de comida y bebida de esta demostración son imágenes de muestra de Unsplash, con su licencia, y no muestran platos del restaurante. La foto de la fachada procede de su ficha pública de Google y necesita permiso de su autor antes de publicar la web.</span></p>` }),
   "privacidad.html": hoja({ archivo: "privacidad.html", titulo: "Política de privacidad", cuerpo: `
   <h2>Responsable</h2>${titular}
   <h2>Qué datos tratamos y para qué</h2><p>Con el formulario recogemos nombre, teléfono, fecha, hora, número de comensales y observaciones. Los usamos solo para responder a tu solicitud de mesa.</p>
@@ -370,7 +388,7 @@ const paginas = {
 for (const [archivo, html] of Object.entries(paginas)) writeFileSync(join(raiz, archivo), html);
 
 writeFileSync(join(raiz, "js/config.js"), `// Generado por _src/build.mjs. No editar a mano.
-window.BM = ${JSON.stringify({ formEndpoint: sitio.formEndpoint, telefono: n.telefono, telefonoLink: n.telefonoLink, horario: horario.map((h) => [h.abre, h.cierra, h.dia]), galeria: galeria.map((g) => ({ src: `img/${g.img}.webp`, alt: g.alt, pie: g.pie })) })};
+window.BM = ${JSON.stringify({ ver, formEndpoint: sitio.formEndpoint, telefono: n.telefono, telefonoLink: n.telefonoLink, horario: horario.map((h) => [h.abre, h.cierra, h.dia]), galeria: galeria.map((g) => ({ src: `img/${g.foto}.webp`, alt: g.alt, pie: g.pie })) })};
 `);
 
 writeFileSync(join(raiz, "img/icono.svg"), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="#2a1b12"/><circle cx="16" cy="16" r="11" fill="none" stroke="#b08a4a" stroke-width="2"/><path d="M11 22V10l5 7 5-7v12" fill="none" stroke="#f4eee2" stroke-width="2.4"/></svg>

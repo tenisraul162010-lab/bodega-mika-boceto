@@ -75,23 +75,24 @@ export const carta = [
   { titulo: "Postres", platos: ["Postre casero"] },
 ];
 
+// Fotos de muestra de Unsplash hasta tener una sesión propia (ver DATOS.md).
 export const especialidades = [
-  { titulo: "Cocina casera", img: "plato-cazuela", alt: "Cazuela de guiso con patatas servida en la mesa", texto: "Cuchara y elaboraciones de siempre, de las que saben a casa." },
-  { titulo: "Carnes y parrilla", img: "plato-chuleton", alt: "Carne a la brasa cortada en un plato azul", texto: "Nuestra seña: carne a la brasa, con el punto que pidas en la mesa." },
-  { titulo: "Raciones para compartir", img: "plato-tabla", alt: "Plato de embutidos y queso curado con picos de pan", texto: "Para poner en el centro y que nadie se quede con hambre." },
-  { titulo: "Desayunos y aperitivos", img: "plato-tortilla", alt: "Tortilla de patatas cortada", texto: "Abrimos temprano, para empezar el día o parar a media mañana.", ref: true },
-  { titulo: "Menú del día", img: "plato-chuleta", alt: "Carne a la plancha con patatas en plato blanco", texto: "A mediodía, primeros, segundos, pan, bebida y postre o café." },
-  { titulo: "Postres", img: "plato-tarta", alt: "Porción de tarta con nata y caramelo", texto: "Postre casero para terminar sin prisa, con un café delante." },
+  { titulo: "Carnes y parrilla", foto: "esc-carnes", alt: "Carne a la brasa cortada sobre una tabla de madera", texto: "Nuestra seña: carne a la brasa, con el punto que pidas en la mesa." },
+  { titulo: "Cocina casera", foto: "esc-guiso", alt: "Guiso de carne en una cazuela oscura", texto: "Cuchara y elaboraciones de siempre, de las que saben a casa." },
+  { titulo: "Raciones para compartir", foto: "esc-raciones", alt: "Ración de patatas con salsa en el centro de una mesa", texto: "Para poner en el centro y que nadie se quede con hambre." },
+  { titulo: "Desayunos y aperitivos", foto: "esc-desayuno", alt: "Manos partiendo pan en un desayuno con zumo de naranja", texto: "Abrimos temprano, para empezar el día o parar a media mañana." },
+  { titulo: "Menú del día", foto: "esc-menu", alt: "Plato de cocina servido en una mesa", texto: "A mediodía, primeros, segundos, pan, bebida y postre o café." },
+  { titulo: "Postres", foto: "esc-postre", alt: "Flan casero con caramelo", texto: "Postre casero para terminar sin prisa, con un café delante." },
 ];
 
-// tam: a (grande), b (mediana), c (ancha). tipo foto: ocupa la casilla entera; el resto, plato redondo.
+// tam: a (grande), b (mediana), c (ancha). real: true solo para fotos del propio restaurante.
 export const galeria = [
-  { img: "plato-solomillo", alt: "Carne a la brasa con patatas y verduras en plato azul", pie: "Carne a la brasa", tam: "a", fondo: "espresso" },
-  { img: "plato-boquerones", alt: "Boquerones fritos con rodajas de tomate", pie: "Boquerones fritos con tomate", tam: "b", fondo: "crema" },
-  { img: "plato-bravas", alt: "Patatas bravas", pie: "Patatas bravas", tam: "b", fondo: "oliva" },
-  { img: "terraza-verja", alt: "Entrada a la terraza, con verja de forja, plantas y sillas de mimbre", pie: "Entrada a la terraza", tam: "c", tipo: "foto", ancho: 820, alto: 380 },
-  { img: "plato-pulpo", alt: "Pulpo a la parrilla con patatas y pimiento", pie: "Pulpo a la parrilla", tam: "b", fondo: "bronce" },
-  { img: "plato-calamares", alt: "Calamares fritos con ensalada y limón", pie: "Calamares con ensalada", tam: "b", fondo: "crema" },
-  { img: "plato-entrecot", alt: "Carne con patatas fritas en plato con cenefa verde", pie: "Carne con patatas", tam: "b", fondo: "espresso" },
-  { img: "plato-verduras", alt: "Verduras a la brasa con patatas en plato azul", pie: "Verduras a la brasa", tam: "b", fondo: "oliva" },
+  { foto: "gal-sarten", alt: "Carne cortada en una sartén de hierro, vista desde arriba", pie: "Carne a la brasa", tam: "a" },
+  { foto: "gal-pinzas", alt: "Pinzas volteando una pieza de carne sobre las brasas", pie: "Sobre las brasas", tam: "b" },
+  { foto: "gal-copas", alt: "Copas de vino tinto brindando", pie: "Para brindar", tam: "b" },
+  { foto: "terraza-verja", alt: "Entrada a la terraza de La Bodega de Mika, con verja de forja, plantas y sillas de mimbre", pie: "Nuestra terraza", tam: "c", real: true, ancho: 1400, alto: 649 },
+  { foto: "gal-chuleton", alt: "Chuletón con espárragos en una fuente", pie: "Carne y verdura", tam: "b" },
+  { foto: "gal-patatas", alt: "Carne con patatas asadas", pie: "Con patatas asadas", tam: "b" },
+  { foto: "gal-romero", alt: "Carne con romero y verduras en un plato oscuro", pie: "Carne con romero", tam: "b" },
+  { foto: "gal-vino", alt: "Dos copas de vino al atardecer", pie: "Al caer la tarde", tam: "b" },
 ];
